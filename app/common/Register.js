@@ -13,28 +13,41 @@ export default class Login extends Component {
         }
     }
     userhandle = (text)=>{
+       
         this.setState({username:text})
     }
     pwdhandle = (text)=>{
         this.setState({pwd:text})
     }
     register = ()=>{
-       
+        if(this.state.username==""||this.state.pwd==""){
+          ToastAndroid.show("账号或密码不能为空",ToastAndroid.SHORT);
+          return false;
+        }
         myFetch.post('/login',{
             username:this.state.username,
             pwd:this.state.pwd}
         ).then(res=>{
-          
-          AsyncStorage.setItem('user',JSON.stringify(res.data))
-          
-        })
-        .then(()=>{
-          ToastAndroid.show("注册成功",ToastAndroid.SHORT);
-          Actions.login();
-        })
-          
-        
-          
+          var a=JSON.stringify(res.data.token);
+          if(a==0){
+              ToastAndroid.show("该账户已被注册",ToastAndroid.SHORT);
+          }
+          else {
+            ToastAndroid.show("正在注册",ToastAndroid.SHORT);
+            AsyncStorage.getItem('user').then((value)=>{
+              if(value==null){
+                AsyncStorage.setItem('user',JSON.stringify([res.data]));
+              }
+              else{
+                let all=JSON.parse(value);
+                all.push(res.data);
+                AsyncStorage.setItem('user',JSON.stringify(all));
+              }
+            }) 
+            ToastAndroid.show("注册成功",ToastAndroid.SHORT);
+            Actions.login();
+          }
+        })      
     } 
   render() {
     return (
@@ -86,6 +99,20 @@ export default class Login extends Component {
                 }}
                 onPress={this.register}>
                 <Text style={{ color:'white'}}>注册</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+                style={{
+                    width: '80%',
+                    height: 40,
+                    backgroundColor: 'red',
+                    marginTop: 30,
+                   
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom:20
+                }}
+                onPress={()=>{Actions.login()}}>
+                <Text style={{ color:'white'}}>返回登录</Text>
             </TouchableOpacity>
            
            

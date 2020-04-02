@@ -20,21 +20,20 @@ console.disableYellowBox=true;//去掉黄色提示
 const App=() => {    
     let [isInstall,setInstall]=useState(true);
     let [isLogin,setLogin]=useState(false);
-    let now = 0;
     let init=()=>{
-       
-       
         AsyncStorage.getItem('isInstall').then(res=>{
           if(res){
             setInstall(false);
           }
         })
         AsyncStorage.getItem('isloading').then(res=>{
+          
           if(res=='false'){
             SplashScreen.hide();
           }
           else if(res=='true'){
             setLogin(true);
+
             SplashScreen.hide();
           }
         })
@@ -42,9 +41,8 @@ const App=() => {
       }
    useEffect(()=>{
     init();
-    setTimeout(SplashScreen.hide,500);
-  
-   },[] )
+    setTimeout(SplashScreen.hide,1000);
+   },[]);
    let afterInstall=()=>{
     setInstall(false)
   }
@@ -54,23 +52,23 @@ const App=() => {
         </View>
   }
   return (
-      <Router
-      backAndroidHandler={()=>{
+      <Router 
+      // backAndroidHandler={()=>{
+      //   if(Actions.currentScene=='_home'||Actions.currentScene=='login'){
+      //     if(new Date().getTime()-now<2000){
+      //       BackHandler.exitApp();
+      //     }else{
+      //       ToastAndroid.show('确定要退出吗',100);
+      //       now = new Date().getTime();
+      //       return true;
+      //     }
+      //   }
+      //   else{
+      //     Actions.pop();
+      //     return true;
+      //   }
        
-        if(Actions.currentScene != '_home'){
-          Actions.pop();
-          return true;
-        }else{
-          if(new Date().getTime()-now<2000){
-            BackHandler.exitApp();
-          }else{
-            ToastAndroid.show('确定要退出吗',100);
-            now = new Date().getTime();
-            return true;
-          }
-        }
-        
-      }}
+      // }}
       >
       <Modal key="modal" hideNavBar>
         <Scene key='root' >
@@ -91,11 +89,7 @@ const App=() => {
                     name='home'/>}
                     title='首页'
                     component={Home}
-                />
-
-                   
-                
-               
+                />      
                 <Scene key='goods'
                     hideNavBar
                     key='goods'

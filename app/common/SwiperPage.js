@@ -21,13 +21,13 @@ export default class SwiperPage extends Component {
                     
                     >
                     <View style={styles.slide}>
-                    <Image style={styles.img}  source={require('../../assets/slide.png')}/>
+                    <Image style={styles.img}  source={require('../../assets/1.jpeg')}/>
                     </View>
                     <View style={styles.slide}>
-                    <Image style={styles.img}   source={require('../../assets/slide.png')}/>
+                    <Image style={styles.img}   source={require('../../assets/2.jpg')}/>
                     </View>
                     <View style={styles.slide}>
-                    <Image style={styles.img}  source={require('../../assets/slide.png')}/>
+                    <Image style={styles.img}  source={require('../../assets/3.jpg')}/>
                    
                     <TouchableOpacity style={styles.start} onPress={this.start}>
                         <Text style={{color:'#fff'}}>开始体验</Text>

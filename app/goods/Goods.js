@@ -6,20 +6,22 @@ import {
     TextInput,
     Text,
     ScrollView,
-    Dimensions
+    Dimensions,
+    ToastAndroid,BackHandler
   } from 'react-native';
-  
+  import { Actions } from 'react-native-router-flux';
   import img1 from '../../assets/images/1.png';
   import img2 from '../../assets/images/2.png';
   const {width}=Dimensions.get('window');
 export default class Goods extends Component {
+  
     render() {
         return (
             <ScrollView>
                 <View>
                     <View style={styles.all}>
                         <View style={styles.top} > 
-                            <TextInput placeholder="请输入商品名称" placeholderTextColor='#999' style={{fontSize:18,color:'#999',width:'90%'}} ></TextInput> 
+                            <TextInput placeholder="请输入商品名称" placeholderTextColor='#999' style={{fontSize:18,color:'#999',width:'90%',height:40}} ></TextInput> 
                             <Image style={{width:30,height:20,marginTop:10}} source={require('../../assets/images/3.png')}/>
                         </View>
                     </View>

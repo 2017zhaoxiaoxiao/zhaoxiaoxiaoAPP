@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {View ,Image,Text,StyleSheet,Dimensions,FlatList, ScrollView,TouchableOpacity,AsyncStorage}from 'react-native'
+import {View ,Image,Text,StyleSheet,Dimensions,FlatList, ScrollView,ToastAndroid,TouchableOpacity,AsyncStorage,BackHandler}from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign';
 import Button from 'react-native-button'
 import ImagePicker from 'react-native-image-picker';
@@ -63,14 +63,15 @@ const data2 = [
    
 ]
 const options = {
-    title: 'Select Avatar',
-    customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+    title: '照相',
+    cancelButtonTitle:'取消',
+    takePhotoButtonTitle:'拍照',
+    chooseFromLibraryButtonTitle:'选择相册',
     storageOptions: {
       skipBackup: true,
       path: 'images',
     },
   };
- 
 export default class My extends Component {
 
     constructor(){
@@ -81,12 +82,14 @@ export default class My extends Component {
     
     }
     componentDidMount(){
+      
         AsyncStorage.getItem('imgurl').then((res)=>{
             this.setState({
                 imgurl:JSON.parse(res)
             })
         })
     }
+  
     takePhoto=()=>{
         ImagePicker.showImagePicker(options, (response) => {
             if (response.didCancel) {

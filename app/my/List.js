@@ -6,9 +6,9 @@ import { Actions } from 'react-native-router-flux';
 const {width}=Dimensions.get('window');
 const styles = StyleSheet.create({
     list:{
-        width:0.4*width,
+        width:0.35*width,
         color:'#777',
-        fontSize:16
+        fontSize:15
     },
     item:{
         flexDirection:"row",
@@ -105,7 +105,7 @@ export default class List extends Component {
       
     }
     render() {
-        
+
         return (
            <ScrollView style={{width:width}}>
             <View style={{flex:1}}>
@@ -116,17 +116,19 @@ export default class List extends Component {
                 </View>
                 <View style={{backgroundColor:'white',width:width}}>
                 {
-                    this.state.data.map((item)=>{
-                        this.res=Math.random()>0.5?( <Text style={{fontSize:16,color:'#777',marginLeft:width*0.1}}>已回复</Text>)
-                        :( <Text style={{fontSize:16,color:'red',marginLeft:width*0.1}}>待回复</Text>);
+                    this.state.data.map((item)=>{  
+                          this.res=Math.random()>0.5?( <Text style={{fontSize:15,color:'#777',marginLeft:width*0.1}}>已回复</Text>)
+                                :( <Text style={{fontSize:15,color:'red',marginLeft:width*0.1}}>待回复</Text>);
+                                
+                                return(  
+                                <View style={styles.item}>  
+                                    <Text style={styles.list} numberOfLines={1} ellipsizeMode={'tail'}>{item.title}</Text> 
+                                    <Text style={{marginLeft:width*0.12,color:'#777',fontSize:16}} >{item.last_reply_at.slice(0,10)}</Text>
+                                    {this.res}
+                                </View>
+                                )
                         
-                        return(  
-                    <View style={styles.item}>  
-                        <Text style={styles.list} numberOfLines={1} ellipsizeMode={'tail'}>{item.title}</Text> 
-                        <Text style={{marginLeft:width*0.14,color:'#777',fontSize:16}} >{item.last_reply_at.slice(0,10)}</Text>
-                        {this.res}
-                    </View>
-                    )})
+                    })
                     }
                 </View>
                 <View style={styles.bot}>
@@ -139,5 +141,6 @@ export default class List extends Component {
            
         )
     }
+
 }
 

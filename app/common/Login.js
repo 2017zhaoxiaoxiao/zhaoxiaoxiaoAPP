@@ -13,22 +13,24 @@ export default class Login extends Component {
             pwd:'',
             isloading:'false'
         }
-        this.handleBack = this.handleBack.bind(this);
+       
     }
 
     componentDidMount(){
+      BackHandler.addEventListener('hardwareBackPress', this.handleBack)
       AsyncStorage.getItem('isloading').then((res)=>{
         this.setState({
           isloading:res
         })
       })
-     BackHandler.addEventListener('hardwareBackPress', this.handleBack)
+    
     }
     componentWillUnmount() {
+     
       BackHandler.removeEventListener('hardwareBackPress', this.handleBack)
   }
   handleBack = () => {
-    console.log(Actions.currentScene);
+   
     if(Actions.currentScene != 'login'){
         Actions.pop();
         return true;
@@ -52,21 +54,29 @@ export default class Login extends Component {
         this.setState({pwd:text})
     }
     login = ()=>{
-
+      if(this.state.username==""||this.state.pwd==""){
+        ToastAndroid.show("账号或密码不能为空",ToastAndroid.SHORT);
+        return false;
+      }
         AsyncStorage.getItem('user').then((res)=>{
-          if(!res)
+          // console.log(res);
+          if(res==null)
             ToastAndroid.show("请先注册",ToastAndroid.SHORT);
           else{
             let user=JSON.parse(res);
-            if(user.username==this.state.username&&user.pwd==this.state.pwd){
-              AsyncStorage.setItem('isloading','true')
-              Actions.home();
+            for(var i=0;i<user.length;i++){
+              if(user[i].username==this.state.username&&user[i].pwd==this.state.pwd){
+                AsyncStorage.setItem('isloading','true');
+                this.setState({
+                  isloading:'true'
+                })
+                Actions.home();
+                return true;
+              }
             }
-            else{
-              ToastAndroid.show("账号或密码错误",ToastAndroid.SHORT);
-              
-              AsyncStorage.setItem('isloading','false')
-            }
+            ToastAndroid.show("账号或密码错误",ToastAndroid.SHORT); 
+            AsyncStorage.setItem('isloading','false')
+            
           }
           
         })     
@@ -136,7 +146,7 @@ export default class Login extends Component {
                 }}
                 onPress={()=>{Actions.register()}}
               >
-                <Text  style={{ color:'white'}}>注册</Text>
+                <Text  style={{ color:'white'}}>去注册</Text>
             </TouchableOpacity>
         </View>
         {

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import {View ,Text,StyleSheet,Image,TextInput,Dimensions,ScrollView,FlatList}from 'react-native'
+import {View ,Text,StyleSheet,Image,TextInput,Dimensions,ScrollView,FlatList,ToastAndroid,BackHandler}from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign';
-import Button from 'react-native-button'
+import Button from 'react-native-button';
+import { Actions } from 'react-native-router-flux';
 import Swiper from 'react-native-swiper';
 const {width}=Dimensions.get('window');
 const goods = [
@@ -26,8 +27,29 @@ const goods = [
         img: require('../../assets/images/d.png')
     }
 ]
+var now=0;
 export default class Home extends Component {
-   
+    componentDidMount(){
+        BackHandler.addEventListener('hardwareBackPress', this.handleBack)
+      }
+      componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBack)
+    }
+    handleBack = () => {
+        if(Actions.currentScene!='login'&&Actions.currentScene != '_home'&&Actions.currentScene!='_goods'&&Actions.currentScene!='_car'&&Actions.currentScene!='my'){
+            Actions.pop();
+            return true;
+        }else{
+         
+            if(new Date().getTime()-now<2000){
+                BackHandler.exitApp();
+            }else{
+                ToastAndroid.show('确定要退出吗',100);
+                now = new Date().getTime();
+                return true;
+            }
+        }
+    }
     render() {
         return (
             <ScrollView>
